@@ -7,11 +7,6 @@ def print_banner():
     print('     GUESS THE NUMBER App         ')
     print('----------------------------------')
 
-
-
-
-
-
 print_banner()
 
 random_number = random.randint(0,100)
