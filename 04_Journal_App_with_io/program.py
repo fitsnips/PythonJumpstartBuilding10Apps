@@ -9,7 +9,7 @@ def banner():
     print('----------------------------------------------')
 
 def menu():
-    menu_selection = input('What would you like to do? [L]ist, [A]dd, E[x]it').upper()
+    menu_selection = input('What would you like to do with your journal? [L]ist, [A]dd, E[x]it').upper().strip()
     return menu_selection
 
 
@@ -18,23 +18,26 @@ def menu():
 
 def main():
     journal_name = 'default.journal'
-    loop = True
+    journal_entries = []
+    menu_choice = True
     banner()
 
     # Read in our journal
     journal.open_journal(journal_name)
 
-    while loop != 'e':
+    while menu_choice != 'x':
         menu_choice = menu()
 
         if menu_choice == 'L':
-            journal.list_entries()
+            journal_entries = journal.list_entries(journal_entries)
         elif menu_choice == 'A':
-            journal.add_entry()
+            journal.add_entry(journal_entries)
         elif menu_choice == 'X':
+            print()
+            print('Goodbye')
             sys.exit()
         else:
-            print('Error: the sky is rising and your entry is not understood')
+            print('Error: the sky is rising AND your entry is not understood')
 
 
 
