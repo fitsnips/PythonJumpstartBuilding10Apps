@@ -1,12 +1,14 @@
 #!/usr/bin/env python3
 import random
+import time
 
 from actors import Wizard, Creature
 
 
 def main():
     banner()
-    game_loop()
+    player_name = get_player_name()
+    game_loop(player_name)
 
 
 def banner():
@@ -14,8 +16,11 @@ def banner():
     print('          Wizard Game App            ')
     print('-------------------------------------')
 
+def get_player_name():
+    player_name = input('What shall we call you? ').rstrip()
+    return player_name
 
-def game_loop():
+def game_loop(player_name):
 
     creatures = [
         Creature('Toad', 100),
@@ -25,9 +30,7 @@ def game_loop():
         Creature('Evil Wizard', 1000)
     ]
 
-    #print(creatures)
-
-    hero = Wizard('Gandolf', 75)
+    hero = Wizard(player_name, 75)
 
 
     while True:
@@ -38,17 +41,31 @@ def game_loop():
               .format(active_creature.level, active_creature.name))
 
 
-        cmd = input('Do you [a]ttack, [r]un away , or [l]ook around: ').rstrip().lower()
+
+        cmd = input('[Level {}] Do you [a]ttack, [r]un away , [t]rain, or [l]ook around: '.format(hero.level)).rstrip().lower()
         if cmd == 'a':
-            hero.attack(active_creature)
+            if hero.attack(active_creature):
+                creatures.remove(active_creature)
+            else:
+                print('The wizard runs and hides taking time to recover ...')
+                time.sleep(5)
+                print('The wizard returns well rested.')
         elif cmd == 'r':
-            print('run')
+            print('The wizard {} has become unsure of his powers and flees'.format(hero.name))
         elif cmd == 'l':
-            print('look around')
+            print('The wizard {} takes in the surroundings and sees:'.format(hero.name))
+            for c in creatures:
+                print(' * A {} of level {}'.format(c.name, c.level))
+        elif cmd == 't':
+            print('The wizard {} takes two sticks and waves them saying random phrases:'.format(hero.name))
+            hero.train()
         else:
             print('OK exiting game ... goodbye!')
             break
 
+        if not creatures:
+            print('You have defeated all your enemies, well done {}'.format(hero.name))
+            break
 
 
 
