@@ -1,5 +1,10 @@
 #!/usr/bin/env python3
+import glob
 import os
+import collections
+
+SearchResult = collections.namedtuple('SearchResult',
+                                      'filename, fileline_number, found_string' )
 
 def main():
     banner()
@@ -11,9 +16,9 @@ def main():
     if not user_string:
         print('Sorry we can not search for that file.')
         return
-    found_count, found_strings = search_for_string(user_string,search_path)
+    found_strings = search_dir(user_string,search_path)
     print_found_files(found_strings)
-    print_summary(found_count)
+    # print_summary(found_count)
 
 def banner():
     print('--------------------------------------------')
@@ -36,27 +41,45 @@ def get_user_string():
     user_string = input('What string are you looking for [ single phrase only]: ')
     if not user_string or not user_string.strip():
         return None
-    return user_string
+    return user_string.lower()
 
-def search_for_string(user_string, search_path):
-
-    found_count = 0
-
-    print('Searching {} for {}'.format(search_path, user_string))
+def search_dir(user_string, search_path):
     found_strings = []
 
-    #TODO preform actual search
-    return found_count, found_strings
+    items = glob.glob(os.path.join(search_path, '*'))
 
+    print('Searching {} for {}'.format(search_path, user_string))
+
+    for item in items:
+        full_item_path = os.path.join(search_path, item)
+        if os.path.isdir(full_item_path):
+            matches = search_dir(user_string, full_item_path)
+            found_strings.extend((matches))
+        else:
+            matches = search_file(full_item_path, user_string)
+            found_strings.extend(matches)
+
+    return found_strings
+
+def search_file(path, text):
+    matches = []
+    with open(path, 'r', encoding='utf-8') as fin:
+
+        for count, line in enumerate(fin):
+            if line.lower().find(text) >= 0:
+                m = SearchResult(filename=path,fileline_number=count+1, found_string=line )
+                matches.append(m)
+        return matches
 
 def print_found_files(found_strings):
 
     if found_strings:
-        for filname, fileline_number, found_string in found_strings:
-            filename = 'file_name_place_holder'
-            fileline_number = 'fileline_number_place_holder'
-            found_string = 'found_sting_place_holder'
-            print('{}, {}>> {}'.format(filename, fileline_number, found_string))
+        for found_string in found_strings:
+            print('-------------- MATCH -------------')
+            print('file: ' + found_string.filename)
+            print('line: {}'.format(found_string.fileline_number))
+            print('match: ' + found_string.found_string.strip())
+            print()
 
 
 def print_summary(number_found):

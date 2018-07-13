@@ -1,0 +1,9 @@
+def this is a good line
+this is a bad line
+this is a junk line
+junk def to find
+
+
+
+
+a lot o while def space
