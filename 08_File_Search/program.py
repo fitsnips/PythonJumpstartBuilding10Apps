@@ -18,7 +18,7 @@ def main():
         return
     found_strings = search_dir(user_string,search_path)
     print_found_files(found_strings)
-    # print_summary(found_count)
+    print_summary(found_strings)
 
 def banner():
     print('--------------------------------------------')
@@ -82,8 +82,8 @@ def print_found_files(found_strings):
             print()
 
 
-def print_summary(number_found):
-    print('{} total matches.'.format(number_found))
+def print_summary(found_strings):
+    print('{} total matches.'.format(len(found_strings)))
     print('End of search')
 
 
