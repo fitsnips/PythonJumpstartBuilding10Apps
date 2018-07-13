@@ -43,7 +43,6 @@ def get_user_string():
     return user_string.lower()
 
 def search_dir(user_string, search_path):
-    found_strings = []
 
     items = glob.glob(os.path.join(search_path, '*'))
 
@@ -52,23 +51,24 @@ def search_dir(user_string, search_path):
     for item in items:
         full_item_path = os.path.join(search_path, item)
         if os.path.isdir(full_item_path):
+            # big way
             matches = search_dir(user_string, full_item_path)
-            found_strings.extend((matches))
+            for m in matches:
+                yield m
         else:
-            matches = search_file(full_item_path, user_string)
-            found_strings.extend(matches)
+            # compact way
+            yield from search_file(full_item_path, user_string)
 
-    return found_strings
+
 
 def search_file(path, text):
-    matches = []
     with open(path, 'r', encoding='utf-8') as fin:
 
         for count, line in enumerate(fin):
             if line.lower().find(text) >= 0:
                 m = SearchResult(filename=path,fileline_number=count+1, found_string=line )
-                matches.append(m)
-        return matches
+                yield m
+
 
 def print_found_files(found_strings):
 
