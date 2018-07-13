@@ -2,7 +2,8 @@
 import random
 import time
 
-from actors import Wizard, Creature
+from actors import Wizard, Creature, SmallAnimal, Dragon
+
 
 
 def main():
@@ -23,11 +24,12 @@ def get_player_name():
 def game_loop(player_name):
 
     creatures = [
-        Creature('Toad', 100),
+        SmallAnimal('Toad', 1),
         Creature('Tiger', 12),
-        Creature('Bat', 3),
-        Creature('Dragon', 50),
-        Creature('Evil Wizard', 1000)
+        SmallAnimal('Bat', 3),
+        Dragon('Dragon', 50, scaliness=20,breaths_fire=True),
+        Dragon('Blue Dragon', 50, scaliness=100, breaths_fire=False),
+        Wizard('Evil Wizard', 1000)
     ]
 
     hero = Wizard(player_name, 75)
@@ -37,12 +39,13 @@ def game_loop(player_name):
 
         active_creature = random.choice(creatures)
 
+        print()
         print('A level {} {} has appeared from a dark and foggy forest ...'
               .format(active_creature.level, active_creature.name))
 
 
 
-        cmd = input('[Level {}] Do you [a]ttack, [r]un away , [t]rain, or [l]ook around: '.format(hero.level)).rstrip().lower()
+        cmd = input('[Level {}] Do you [a]ttack, [r]un away , [t]rain, [l]ook around, or E[x]it game: '.format(hero.level)).rstrip().lower()
         if cmd == 'a':
             if hero.attack(active_creature):
                 creatures.remove(active_creature)
@@ -59,11 +62,15 @@ def game_loop(player_name):
         elif cmd == 't':
             print('The wizard {} takes two sticks and waves them saying random phrases:'.format(hero.name))
             hero.train()
-        else:
+        elif cmd == 'x':
             print('OK exiting game ... goodbye!')
             break
+        else:
+            print('Try again, unknown command!')
 
         if not creatures:
+            print()
+            print('*************************************************')
             print('You have defeated all your enemies, well done {}'.format(hero.name))
             break
 
