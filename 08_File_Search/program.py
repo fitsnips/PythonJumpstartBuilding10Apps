@@ -18,7 +18,6 @@ def main():
         return
     found_strings = search_dir(user_string,search_path)
     print_found_files(found_strings)
-    print_summary(found_strings)
 
 def banner():
     print('--------------------------------------------')
@@ -73,17 +72,20 @@ def search_file(path, text):
 
 def print_found_files(found_strings):
 
+    match_count = 0
     if found_strings:
         for found_string in found_strings:
+            match_count += 1
             print('-------------- MATCH -------------')
             print('file: ' + found_string.filename)
             print('line: {}'.format(found_string.fileline_number))
             print('match: ' + found_string.found_string.strip())
             print()
+    print_summary(match_count)
 
 
-def print_summary(found_strings):
-    print('{} total matches.'.format(len(found_strings)))
+def print_summary(match_count):
+    print('{} total matches.'.format(match_count))
     print('End of search')
 
 
