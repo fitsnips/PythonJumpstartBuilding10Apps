@@ -1,0 +1,3 @@
+street, city, zip, state, beds, baths, sq_ft, type, sale_date, sale_price, latitude, longitude
+2001 bad example, Austin, 78663, Texas, 4, 3, 3500, house, 11/11/2011, 200000, -19, -12
+201 another example, Union City, 94587, CA, 4, 3, 2500, house, 11/11/2010, 1200000, -1, -1
