@@ -7,13 +7,8 @@ def main():
     banner()
     datafile = get_data_file()
     data = load_data(datafile)
-    header = data[0]
-    print(header)
-    print()
 
-    for id,line in enumerate(data):
-        if id != 0:
-            print(line)
+
 
 
 def banner():
@@ -31,10 +26,16 @@ def load_data(datafile):
     lines = []
 
     print('Loading CSV real estate data from ... {}'.format(datafile), end=' ')
-    with open(datafile, 'r') as fin:
-       for line in fin:
-           lines.append(line)
+    with open(datafile, 'r', encoding='utf-8') as fin:
+        header = fin.readline().strip()
+        for line in fin:
+           line_data = line.strip().split(',')
+           lines.append(line_data)
+
     print('... done')
+    print('Header: ' + header)
+    for line in lines[:5]:
+        print(line)
     print()
 
     return lines
