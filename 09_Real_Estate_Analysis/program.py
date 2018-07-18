@@ -86,7 +86,7 @@ def query_data(data):# list[Purchase]):
         if p.beds == 2
     ]
 
-    average_two_bed_price = statistics.mean(p.price for p in two_bed_homes])
+    average_two_bed_price = statistics.mean([announce(p.price, 'price') for p in two_bed_homes[:5]])
     average_two_bed_baths = round(statistics.mean([p.baths for p in two_bed_homes]),1)
     average_two_bed_sqft = round(statistics.mean([p.sq__ft for p in two_bed_homes]),1)
 
@@ -94,7 +94,9 @@ def query_data(data):# list[Purchase]):
           .format(int(average_two_bed_price),average_two_bed_baths,average_two_bed_sqft))
 
 
-
+def announce(item,msg):
+    print('Pulling item {} for {}'.format(item,msg))
+    return item
 
 
 if __name__ == '__main__':
