@@ -41,3 +41,5 @@ for u in users:
 
 # very quick lookup using dict
 print(lookup['user3@sampledomain.com'])
+
+
