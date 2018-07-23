@@ -1,7 +1,7 @@
 import requests
 import collections
 
-MoveResult = collections.namedtuple(
+MovieResult = collections.namedtuple(
     'MovieResult',
     'imdb_code, title, duration,director, year, rating, imdb_score, keywords, genres'
 )
@@ -20,10 +20,10 @@ movies_list = movie_data.get('hits')
 #print(type(movies_list), movies_list)
 
 
-movies = []
-for md in movies_list:
-    m = MoveResult(**md)
-    movies.append(m)
+movies = [
+    MovieResult(**md)
+    for md in movies_list
+]
 
 print("Found {} movies for search {}".format(len(movies), search))
 for m in movies:
