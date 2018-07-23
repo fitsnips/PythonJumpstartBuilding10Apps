@@ -3,7 +3,7 @@ import collections
 
 MoveResult = collections.namedtuple(
     'MovieResult',
-    'imdb_code, title, duration,director, year, rating, imdb_score, keywords, generes'
+    'imdb_code, title, duration,director, year, rating, imdb_score, keywords, genres'
 )
 
 search = input("Search string: ")
@@ -22,17 +22,7 @@ movies_list = movie_data.get('hits')
 
 movies = []
 for md in movies_list:
-    m = MoveResult(
-        imdb_code=md.get('imdb_code'),
-        title=md.get('title'),
-        duration=md.get('duration'),
-        director=md.get('director'),
-        year=md.get('year', 0),
-        rating=md.get('rating', 0),
-        imdb_score=md.get('imdb_score', 0.0),
-        keywords=md.get('keywords'),
-        generes=md.get('generes')
-    )
+    m = MoveResult(**md)
     movies.append(m)
 
 print("Found {} movies for search {}".format(len(movies), search))
