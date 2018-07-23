@@ -6,7 +6,7 @@ MoveResult = collections.namedtuple(
     'imdb_code, title, duration,director, year, rating, imdb_score, keywords, generes'
 )
 
-search = 'capital'
+search = input("Search string: ")
 url = 'http://movie_service.talkpython.fm/api/search/{}'.format(search)
 
 
@@ -35,5 +35,6 @@ for md in movies_list:
     )
     movies.append(m)
 
+print("Found {} movies for search {}".format(len(movies), search))
 for m in movies:
     print("{} -- {}".format(m.year, m.title))
