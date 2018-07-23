@@ -1,12 +1,11 @@
 #!/usr/bin/env python3
-import urllib3
+import movie_svc
+import requests.exceptions
 
 
 def main():
     banner()
-    search_title = get_movie_title()
-    found_titles = find_movie_by_title(search_title)
-    print_found_titles(found_titles)
+    search_event_loop()
 
 
 def banner():
@@ -15,20 +14,31 @@ def banner():
     print('------------------------------------------------------')
     print()
 
-def get_movie_title():
-    title = input=('What movie title would you like to search for: ')
-    return title
+def search_event_loop():
+    search = "ONCE_THROUGH_LOOP"
+    while search != 'x':
+        try:
+            search = input('Movie search text (x to exit): ').rstrip().lower()
+            if search != 'x':
+                results = movie_svc.find_movies(search)
+                for r in results:
+                    print('{} -- {}'.format(
+                        r.year, r.title
+                    ))
+                print()
+        except ValueError:
+            print('Error: search text is required')
+        except requests.exceptions.ConnectionError:
+            print('Error: Please check network connection.')
+        except Exception as x:
+            print('Error: unable to run search at this time!')
+            # to see type of exception
+            #print('Details: {}'.format(type(x)))
+            print('Details: {}'.format(x))
 
-def find_movie_by_title(search_string):
-    url = movie_service.talkpython.fm/search_string
 
-    try
-    titles = { 'name': title, 'year': year }
-    return titles
+    print('Exiting .....')
 
-def print_found_titles(titles):
-    for year, title in titles:
-        print('{} - {}'.format(year, title))
 
 if __name__ == '__main__':
     main()
